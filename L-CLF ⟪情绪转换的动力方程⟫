@@ -1,0 +1,125 @@
+# **前后摇摆的物理动力学模型**
+
+## **1. 系统定义（System Definition）**
+
+把“人物”视为一个刚体（rigid body），
+质量中心为 *COM*（Center of Mass）。
+
+整体可视为 **倒单摆（Inverted Pendulum）系统**，
+但摆幅极小，属于 **微振动区间**。
+
+---
+
+## **2. 自由度（Degrees of Freedom）**
+
+系统主要在 1 个自由度上运动：
+
+* **前后轴（sagittal plane）**
+  角度 θ 变化范围为 ±2° ～ ±5°。
+
+横移与旋转自由度忽略（幅度太小）。
+
+---
+
+## **3. 外力模型（External Forces）**
+
+外力只包含：
+
+1. **重力**
+   ( F_g = m \cdot g )
+
+2. **地面支持力**
+   ( N )
+
+3. **阻尼力（Damping force）**
+   由关节与肌肉阻尼构成
+   ( F_d = -c \cdot \dot{\theta} )
+
+4. **微输入力（Control Input）**
+   用于维持小角度摆动
+   ( \tau = k \cdot \theta )
+
+---
+
+## **4. 运动方程（Equation of Motion）**
+
+小角度线性化后：
+
+[
+I \ddot{\theta} + c\dot{\theta} + k\theta = 0
+]
+
+* ( I ) = 惯性矩（moment of inertia）
+* ( c ) = 阻尼系数
+* ( k ) = 控制刚度
+
+此方程会产生：
+
+### ✔ 阻尼正弦波（Damped sinusoidal motion）
+
+代表前后轻微摇摆。
+
+---
+
+## **5. 频率与幅值（Frequency & Amplitude）**
+
+### **频率（Natural Frequency）**
+
+[
+\omega_n = \sqrt{k/I}
+]
+
+实际系统目标：
+**0.25 – 0.35 Hz**
+（人类舒适摆动频率）
+
+### **幅值（Amplitude）**
+
+[
+\theta_{max} = 2^{\circ} \sim 5^{\circ}
+]
+
+换算成水平位移仅几厘米。
+
+---
+
+## **6. 控制策略（Control Strategy）**
+
+采用 **PD 控制器**（比例 + 微分）：
+
+[
+\tau = K_p \theta + K_d \dot{\theta}
+]
+
+目的：
+
+* 不让系统倒
+* 保持稳定的前后摇晃
+* 让运动曲线平滑无断点
+
+---
+
+## **7. 摄影机在影片中怎么呈现（Video Dynamics）**
+
+为制作视频，使用以下技术：
+
+### ✔ 曲线插值（Curve Interpolation）
+
+用 **Cubic Bezier** 或 **Sine Wave**
+取代真实人的随机噪声。
+
+### ✔ 抖动消除（Motion Stabilization）
+
+用 **Optical Flow** 或 AI 稳定器避免画面跳动。
+
+### ✔ 物理驱动动画（Physics-driven Animation）
+
+依照上方方程式计算关键帧。
+
+---
+
+# 🧊 **B 版总结：**
+
+**这就是标准工业级动力学
+只有数学、物理、控制论。**
+
